@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:laba5/helper_functions/download_file.dart';
+import 'package:laba5/pages/downloaded_files_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -101,14 +104,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text('Загрузка файла: $_progressValue')
               },
               if (_isError) ...{
-                SizedBox(height: 8,),
+                SizedBox(
+                  height: 8,
+                ),
                 Text('Указанный файл не найден!')
               },
               SizedBox(
                 height: 16,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => DownloadedFilesPage()));
+                },
                 child: Text('Скачанные файлы'),
               )
             ],

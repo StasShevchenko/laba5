@@ -5,7 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 Future download({required String url, required String filename, required Function(String) onProgressChange,
     required Function onDownloadEnd}) async {
-    var savePath = '/storage/emulated/0/Download/Articles/$filename';
+    var savePath = '/storage/emulated/0/Download/AppArticles/$filename';
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
