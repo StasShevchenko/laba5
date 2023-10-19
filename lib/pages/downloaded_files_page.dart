@@ -12,7 +12,7 @@ class DownloadedFilesPage extends StatefulWidget {
 
 class _DownloadedFilesPageState extends State<DownloadedFilesPage> {
   final directory = '/storage/emulated/0/Download/AppArticles';
-  List _files = [];
+  List<io.FileSystemEntity> _files = [];
 
   @override
   void initState() {
@@ -36,7 +36,10 @@ class _DownloadedFilesPageState extends State<DownloadedFilesPage> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
               itemCount: _files.length,
-              itemBuilder: (context, index) => FileListItem(file: _files[index])),
+              itemBuilder: (context, index) => FileListItem(file: _files[index], onDelete: () {
+                _files[index].deleteSync();
+                getFiles();
+              },)),
         ),
       ),
     );
