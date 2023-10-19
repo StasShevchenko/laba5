@@ -36,10 +36,13 @@ class _DownloadedFilesPageState extends State<DownloadedFilesPage> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
               itemCount: _files.length,
-              itemBuilder: (context, index) => FileListItem(file: _files[index], onDelete: () {
-                _files[index].deleteSync();
-                getFiles();
-              },)),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: FileListItem(file: _files[index], onDelete: () {
+                  _files[index].deleteSync();
+                  getFiles();
+                },),
+              )),
         ),
       ),
     );

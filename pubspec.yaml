@@ -17,6 +17,7 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
   open_filex: ^4.3.4
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

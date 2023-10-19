@@ -1,8 +1,9 @@
-import 'dart:ui';
+
 
 import 'package:flutter/material.dart';
 import 'package:laba5/helper_functions/download_file.dart';
 import 'package:laba5/pages/downloaded_files_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +38,44 @@ class _MyHomePageState extends State<MyHomePage> {
   var _isLoading = false;
   var _progressValue = '';
   var _isError = false;
+  var isHintNeeded = false;
+  var _dontShowAnymore = false;
+
+  SharedPreferences? preferences;
+
+  @override
+  void initState() {
+    super.initState();
+    Future((){
+    readIsHintNeeded();
+    });
+  }
+
+  void readIsHintNeeded() async {
+    preferences = await SharedPreferences.getInstance();
+    final showHint = preferences!.getBool("showHint");
+    if(showHint == null) {
+      if(mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: const Text(
+                    'Для скачивания pdf файла введите его id и нажмите кнопку "Скачать файл"'),
+                actions: [
+                  ElevatedButton(
+                      onPressed: () {
+                        preferences!.setBool("showHint", true);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Больше не показывать'))
+                ],
+              );
+            });
+      }
+    }
+  }
+
 
   void showProgress(String progress) {
     setState(() {
@@ -49,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Center(child: Text('Загрузка pdf файлов')),
+        title: const Center(child: Text('Загрузка pdf файлов')),
       ),
       body: Center(
         child: Padding(
@@ -95,29 +134,29 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   }
                 },
-                child: Text('Скачать файл'),
+                child: const Text('Скачать файл'),
               ),
               if (_isLoading) ...{
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text('Загрузка файла: $_progressValue')
               },
               if (_isError) ...{
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
-                Text('Указанный файл не найден!')
+                const Text('Указанный файл не найден!')
               },
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DownloadedFilesPage()));
+                      builder: (context) => const DownloadedFilesPage()));
                 },
-                child: Text('Скачанные файлы'),
+                child: const Text('Скачанные файлы'),
               )
             ],
           ),
